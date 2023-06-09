@@ -2,7 +2,8 @@
 name = "pyrdfj2"
 version = "0.0.1"
 description = "Python wrapper on jinja SPARQL templating"
-authors = ["João Santos <jotaflame@gmail.com>"]
+authors = [ "Marc Portier <marc.portier@gmail.com>", 
+            "João Santos <jotaflame@gmail.com>"]
 readme = "README.rst"
 packages = [{include = "pyrdfj2"}]
 license = "MIT"
