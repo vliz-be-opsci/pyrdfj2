@@ -3,6 +3,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, meta
 
+from pyrdfj2.j2_functions import Filters, Functions
 from pyrdfj2.pyrdfj2 import SparqlBuilder
 
 log = logging.getLogger(__name__)
@@ -19,13 +20,16 @@ class J2SparqlBuilder(SparqlBuilder):
     :param endpoint: sparql endpoint URL of the service to call upon
     :param templates_folder: location of the folder containing the sparql
         templates
+    :param j2_filters: jinja2 custom filters to apply on templates.
+    :param j2_functions: jinja2 custom functions to apply on templates.
     """
 
     def __init__(
-        self, templates_folder: str = None, j2_filters=None, j2_functions=None
+        self,
+        templates_folder: str = DEFAULT_TEMPLATES_FOLDER,
+        j2_filters=Filters,
+        j2_functions=Functions,
     ):
-        if not templates_folder:
-            templates_folder = DEFAULT_TEMPLATES_FOLDER
         self._templates_env = Environment(
             loader=FileSystemLoader(templates_folder)
         )
