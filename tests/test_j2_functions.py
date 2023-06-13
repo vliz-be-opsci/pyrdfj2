@@ -2,12 +2,12 @@ import unittest
 from datetime import date, datetime
 from typing import Callable
 
-from pyrdfj2.j2_functions import Functions, ValueMapper
+from pyrdfj2.j2_functions import Filters, Functions, ValueMapper
 
-ttl_fmt = Functions.all()["ttl_fmt"]
 uritexpand_fmt = Functions.all()["uritexpand"]
 regexreplace_fmt = Functions.all()["regexreplace"]
 map_build_fmt = Functions.all()["map"]
+ttl_fmt = Filters.all()["ttl"]
 
 
 class TestTTLFormatting(unittest.TestCase):
