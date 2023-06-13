@@ -4,7 +4,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, meta
 
 from pyrdfj2.j2_functions import Filters, Functions
-from pyrdfj2.pyrdfj2 import SparqlBuilder
+from pyrdfj2.pyrdfj2 import RDFSyntaxBuilder
 
 log = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 DEFAULT_TEMPLATES_FOLDER = Path(__file__).parent.absolute() / "templates"
 
 
-class J2SparqlBuilder(SparqlBuilder):
+class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
     """
     Generic class to perform templated SPARQL searches versus a given SPARQL
         endpoint.
@@ -38,11 +38,11 @@ class J2SparqlBuilder(SparqlBuilder):
         if j2_functions:
             self._templates_env.globals = j2_functions.all()
 
-    def _get_qry_template(self, name: str):
+    def _get_rdfsyntax_template(self, name: str):
         """Gets the template"""
         return self._templates_env.get_template(name)
 
-    def variables_in_query(self, name: str) -> set:
+    def variables_in_template(self, name: str) -> set:
         """
         The set of variables to make this template work
 
@@ -60,7 +60,7 @@ class J2SparqlBuilder(SparqlBuilder):
         ast = self._templates_env.parse(*template_source)
         return meta.find_undeclared_variables(ast)
 
-    def build_sparql_query(self, name: str, **variables) -> str:
+    def build_syntax(self, name: str, **variables) -> str:
         """
         Fills a named template sparql
 
@@ -68,5 +68,5 @@ class J2SparqlBuilder(SparqlBuilder):
         :param **variables: named context parameters to apply to the template
         """
         log.debug(f"building sparql query '{name}' with variables={variables}")
-        qry = self._get_qry_template(name).render(variables)
+        qry = self._get_rdfsyntax_template(name).render(variables)
         return qry

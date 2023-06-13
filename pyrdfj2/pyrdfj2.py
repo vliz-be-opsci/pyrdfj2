@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
 
-class SparqlBuilder(ABC):
+class RDFSyntaxBuilder(ABC):
     @abstractmethod
-    def build_sparql_query(self, name: str, **variables):
+    def build_syntax(self, name: str, **variables):
         """
         Builds the named sparql query by applying the provided params
 
@@ -16,7 +16,7 @@ class SparqlBuilder(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def variables_in_query(self, name: str):
+    def variables_in_template(self, name: str):
         """
         Return the set of all the variable names applicable to the named query
 
