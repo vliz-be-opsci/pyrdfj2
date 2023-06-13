@@ -1,8 +1,10 @@
+from pathlib import Path
+
 from jinja2 import Environment, FileSystemLoader
 
-from pyrdfj2.sparqlbuilder import DEFAULT_TEMPLATES_FOLDER
+TEST_TEMPLATES_FOLDER = Path(__file__).parent.absolute() / "templates"
 
-file_system_loader = FileSystemLoader(DEFAULT_TEMPLATES_FOLDER)
+file_system_loader = FileSystemLoader(TEST_TEMPLATES_FOLDER)
 templates_env = Environment(loader=file_system_loader)
 
 sparql_templates_list = templates_env.list_templates()
