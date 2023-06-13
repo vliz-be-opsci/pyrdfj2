@@ -2,16 +2,17 @@ import pytest
 from jinja2 import Template
 from util4tests import log, run_single_test
 
-from pyrdfj2.sparqlbuilder import J2RDFSyntaxBuilder
+from pyrdfj2.rdf_syntax_builder import J2RDFSyntaxBuilder
 from tests.const import (
     ALL_QUERY,
+    TEST_TEMPLATES_FOLDER,
     N,
     simple_template,
     sparql_templates_list,
     template_variables,
 )
 
-j2sqb = J2RDFSyntaxBuilder()
+j2sqb = J2RDFSyntaxBuilder(TEST_TEMPLATES_FOLDER)
 
 
 def test_get_rdfsyntax_template():

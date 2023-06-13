@@ -1,15 +1,12 @@
 import logging
-from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, meta
 
+from pyrdfj2.exceptions import NoTemplateFolder
 from pyrdfj2.j2_functions import Filters, Functions
 from pyrdfj2.pyrdfj2 import RDFSyntaxBuilder
 
 log = logging.getLogger(__name__)
-
-
-DEFAULT_TEMPLATES_FOLDER = Path(__file__).parent.absolute() / "templates"
 
 
 class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
@@ -18,7 +15,7 @@ class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
         endpoint.
 
     :param endpoint: sparql endpoint URL of the service to call upon
-    :param templates_folder: location of the folder containing the sparql
+    :param templates_folder: location of the folder containing the jinja2
         templates
     :param j2_filters: jinja2 custom filters to apply on templates.
     :param j2_functions: jinja2 custom functions to apply on templates.
@@ -26,17 +23,24 @@ class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
 
     def __init__(
         self,
-        templates_folder: str = DEFAULT_TEMPLATES_FOLDER,
-        j2_filters=Filters,
-        j2_functions=Functions,
+        templates_folder: str = "",
+        extra_filters={},
+        extra_functions={},
     ):
+        if not templates_folder:
+            raise NoTemplateFolder
         self._templates_env = Environment(
             loader=FileSystemLoader(templates_folder)
         )
-        if j2_filters:
-            self._templates_env.filters.update(j2_filters.all())
-        if j2_functions:
-            self._templates_env.globals = j2_functions.all()
+
+        filters: dict = Filters.all()
+        functions: dict = Functions.all()
+        if extra_filters:
+            filters.update(extra_filters)
+        if extra_functions:
+            functions.update(extra_functions)
+        self._templates_env.filters.update(filters)
+        self._templates_env.globals.update(functions)
 
     def _get_rdfsyntax_template(self, name: str):
         """Gets the template"""
