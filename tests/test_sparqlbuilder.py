@@ -32,7 +32,6 @@ def test_build_syntax():
     sparql_templates_list,
 )
 def test_get_variables_sparql_template(name):
-    j2sqb = J2RDFSyntaxBuilder()
     variables = j2sqb.variables_in_template(name=name)
     log.info(f"all variables {variables}")
     assert (
