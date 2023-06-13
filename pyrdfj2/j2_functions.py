@@ -12,9 +12,6 @@ class Functions:
     @staticmethod
     def all():
         return {
-            # TODO -- remove this in 0.2.0 -- deprecated use, now use
-            #   `| ttl(...)` instead
-            "ttl_fmt": turtle_format,
             "uritexpand": uritexpand,
             "regexreplace": regexreplace,
             "map": map_build,
@@ -28,7 +25,7 @@ class Filters:
     @staticmethod
     def all():
         return {
-            "ttl": turtle_format,  # new way of using this formatting
+            "ttl": turtle_format,
         }
 
 
