@@ -25,26 +25,26 @@ class Filters:
     @staticmethod
     def all():
         return {
-            "ttl": turtle_format,
+            "xsd": xsd_format,
         }
 
 
-def turtle_value(content, quote, type_name, suffix=None):
+def xsd_value(content, quote, type_name, suffix=None):
     if suffix is None:
         suffix = "^^" + type_name
     return quote + str(content) + quote + suffix
 
 
-def turtle_format_boolean(content, quote, suffix):
+def xsd_format_boolean(content, quote, suffix):
     # make rigid bool
     if not isinstance(content, bool):
         asbool = str(content).lower() not in ["", "0", "no", "false", "off"]
         content = asbool
     # serialize to string again
-    return turtle_value(str(content).lower(), quote, "xsd:boolean")
+    return xsd_value(str(content).lower(), quote, "xsd:boolean")
 
 
-def turtle_format_integer(content, quote, suffix):
+def xsd_format_integer(content, quote, suffix):
     # make rigid int
     if not isinstance(content, int):
         asint = int(str(content))
@@ -56,10 +56,10 @@ def turtle_format_integer(content, quote, suffix):
         )
         content = asint
     # serialize to string again
-    return turtle_value(str(content), quote, "xsd:integer")
+    return xsd_value(str(content), quote, "xsd:integer")
 
 
-def turtle_format_double(content, quote, suffix):
+def xsd_format_double(content, quote, suffix):
     # make rigid double
     if not isinstance(content, float):
         assert (
@@ -68,34 +68,34 @@ def turtle_format_double(content, quote, suffix):
         asdbl = float(str(content))
         content = asdbl
     # serialize to string again
-    return turtle_value(str(content), quote, "xsd:double")
+    return xsd_value(str(content), quote, "xsd:double")
 
 
-def turtle_format_date(content, quote, suffix):
+def xsd_format_date(content, quote, suffix):
     # make rigid date
     if not isinstance(content, date):
         asdt = parser.isoparse(content).date()
     else:
         asdt = content
-    return turtle_value(asdt.isoformat(), quote, "xsd:date")
+    return xsd_value(asdt.isoformat(), quote, "xsd:date")
 
 
-def turtle_format_datetime(content, quote, suffix):
+def xsd_format_datetime(content, quote, suffix):
     # make rigid datetime
     if not isinstance(content, datetime):
         asdtm = parser.isoparse(content)
     else:
         asdtm = content
-    return turtle_value(asdtm.isoformat(), quote, "xsd:datetime")
+    return xsd_value(asdtm.isoformat(), quote, "xsd:datetime")
 
 
-def turtle_format_uri(content, quote, suffix):
+def xsd_format_uri(content, quote, suffix):
     # assume content is valid uri for now
     uri = content
-    return turtle_value(uri, quote, "xsd:anyURI")
+    return xsd_value(uri, quote, "xsd:anyURI")
 
 
-def turtle_format_string(content, quote, suffix):
+def xsd_format_string(content, quote, suffix):
     # deal with escapes -- note: code is odd to read,
     #   but this escapes single \ to double \\
     content = str(content).replace("\\", "\\\\")
@@ -112,21 +112,21 @@ def turtle_format_string(content, quote, suffix):
         "ttl format error: still having "
         f"applied quote format {quote} in text content"
     )
-    return turtle_value(content, quote, "xsd:string", suffix)
+    return xsd_value(content, quote, "xsd:string", suffix)
 
 
-TTL_FMT_TYPE_FN = {
-    "xsd:boolean": turtle_format_boolean,
-    "xsd:integer": turtle_format_integer,
-    "xsd:double": turtle_format_double,
-    "xsd:date": turtle_format_date,
-    "xsd:datetime": turtle_format_datetime,
-    "xsd:anyURI": turtle_format_uri,
-    "xsd:string": turtle_format_string,
+XSD_FMT_TYPE_FN = {
+    "xsd:boolean": xsd_format_boolean,
+    "xsd:integer": xsd_format_integer,
+    "xsd:double": xsd_format_double,
+    "xsd:date": xsd_format_date,
+    "xsd:datetime": xsd_format_datetime,
+    "xsd:anyURI": xsd_format_uri,
+    "xsd:string": xsd_format_string,
 }
 
 
-def turtle_format(content, type_name: str, quote: str = "'"):
+def xsd_format(content, type_name: str, quote: str = "'"):
     assert quote in "'\"", "ttl format only accepts ' or \" as valid quotes."
     if content is None:
         content = ""
@@ -137,7 +137,7 @@ def turtle_format(content, type_name: str, quote: str = "'"):
         # assuming string content for further quoting rules
         type_name = "xsd:string"
 
-    type_format_fn = TTL_FMT_TYPE_FN.get(type_name, None)
+    type_format_fn = XSD_FMT_TYPE_FN.get(type_name, None)
     assert type_format_fn is not None, (
         "type_name '%s' not supported." % type_name
     )
