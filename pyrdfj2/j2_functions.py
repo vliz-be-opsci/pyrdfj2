@@ -15,9 +15,6 @@ class Functions:
             "uritexpand": uritexpand,
             "regexreplace": regexreplace,
             "map": map_build,
-            # TODO -- remove this in 0.2.0 -- depracted use, no longer needed
-            #    since xmlasdict
-            "unparse": xml_unparse,
         }
 
 
@@ -193,7 +190,3 @@ def map_build(
     if cached_as is not None:
         Functions._cache[cached_as] = vmap
     return vmap
-
-
-def xml_unparse(wrapper):
-    return str(wrapper)
