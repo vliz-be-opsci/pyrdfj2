@@ -14,11 +14,10 @@ class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
     Generic class to perform templated SPARQL searches versus a given SPARQL
         endpoint.
 
-    :param endpoint: sparql endpoint URL of the service to call upon
     :param templates_folder: location of the folder containing the jinja2
         templates
-    :param j2_filters: jinja2 custom filters to apply on templates.
-    :param j2_functions: jinja2 custom functions to apply on templates.
+    :param extra_filters: jinja2 custom filters to apply on templates.
+    :param extra_functions: jinja2 custom functions to apply on templates.
     """
 
     def __init__(
