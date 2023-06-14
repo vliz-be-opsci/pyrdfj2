@@ -1,0 +1,45 @@
+pyrdfj2 package
+===============
+
+Submodules
+----------
+
+pyrdfj2.exceptions module
+-------------------------
+
+.. automodule:: pyrdfj2.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyrdfj2.j2\_functions module
+----------------------------
+
+.. automodule:: pyrdfj2.j2_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyrdfj2.pyrdfj2 module
+----------------------
+
+.. automodule:: pyrdfj2.pyrdfj2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyrdfj2.rdf\_syntax\_builder module
+-----------------------------------
+
+.. automodule:: pyrdfj2.rdf_syntax_builder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pyrdfj2
+   :members:
+   :undoc-members:
+   :show-inheritance:
