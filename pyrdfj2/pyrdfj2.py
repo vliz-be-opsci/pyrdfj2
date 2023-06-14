@@ -5,7 +5,7 @@ class RDFSyntaxBuilder(ABC):
     @abstractmethod
     def build_syntax(self, name: str, **variables):
         """
-        Builds the named sparql query by applying the provided params
+        Builds the named sparql query by applying the provided params.
 
         :param name: Name of the query.
         :param variables: Dict of all the variables given to the template to
