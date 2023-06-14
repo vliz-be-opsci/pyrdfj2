@@ -1,7 +1,7 @@
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 PROJECT = pyrdfj2
-AUTHOR = Marc Portier, João Santos
+AUTHOR = "Marc Portier, João Santos"
 
 .PHONY: build docs clean install docker-build
 
