@@ -15,6 +15,8 @@ class Functions:
             "uritexpand": uritexpand,
             "regexreplace": regexreplace,
             "map": map_build,
+            # TODO: Check for duplication in filters and the meaning.
+            "xsd": xsd_format,
         }
 
 
