@@ -17,6 +17,7 @@ class Functions:
             "map": map_build,
             # TODO: Check for duplication in filters and the meaning.
             "xsd": xsd_format,
+            "ttl": xsd_format,
         }
 
 
