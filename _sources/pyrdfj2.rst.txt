@@ -28,10 +28,10 @@ pyrdfj2.pyrdfj2 module
    :undoc-members:
    :show-inheritance:
 
-pyrdfj2.rdf\_syntax\_builder module
------------------------------------
+pyrdfj2.syntax\_builder module
+------------------------------
 
-.. automodule:: pyrdfj2.rdf_syntax_builder
+.. automodule:: pyrdfj2.syntax_builder
    :members:
    :undoc-members:
    :show-inheritance:
