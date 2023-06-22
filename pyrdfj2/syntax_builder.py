@@ -25,11 +25,12 @@ class J2RDFSyntaxBuilder(RDFSyntaxBuilder):
         templates_folder: str = "",
         extra_filters={},
         extra_functions={},
+        jinja_env_variables={},
     ):
         if not templates_folder:
             raise NoTemplateFolder
         self._templates_env = Environment(
-            loader=FileSystemLoader(templates_folder)
+            loader=FileSystemLoader(templates_folder), **jinja_env_variables
         )
 
         filters: dict = Filters.all()
