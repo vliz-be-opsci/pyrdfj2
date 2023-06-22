@@ -2,7 +2,7 @@ import pytest
 from jinja2 import Template
 from util4tests import log, run_single_test
 
-from pyrdfj2.rdf_syntax_builder import J2RDFSyntaxBuilder
+from pyrdfj2.syntax_builder import J2RDFSyntaxBuilder
 from tests.const import (
     ALL_QUERY,
     TEST_TEMPLATES_FOLDER,
