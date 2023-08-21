@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyrdfj2"
-version = "0.0.3"
+version = "0.0.4"
 description = "Python wrapper on jinja SPARQL templating"
 authors = [ "Marc Portier <marc.portier@gmail.com>", 
             "João Santos <jotaflame@gmail.com>"]
