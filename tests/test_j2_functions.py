@@ -8,6 +8,7 @@ uritexpand_fmt = Functions.all()["uritexpand"]
 regexreplace_fmt = Functions.all()["regexreplace"]
 map_build_fmt = Functions.all()["map"]
 xsd_fmt = Filters.all()["xsd"]
+uri_fmt = Filters.all()["uri"]
 
 
 class TestXSDFormatting(unittest.TestCase):
@@ -134,6 +135,15 @@ class TestXSDFormatting(unittest.TestCase):
             xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
         )
 
+    def test_uri_cleaning(self):
+        type_name = "xsd:anyURI"
+        val = "https://example.org/for[testing]"
+        clean_val = "https://example.org/for%5Btesting%5D"
+        fmt = "'" + clean_val + "'^^" + type_name
+        self.assertEqual(
+            xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
+        )
+
     def test_string(self):
         type_name = "xsd:string"
         self.assertEqual(
@@ -171,6 +181,17 @@ class TestXSDFormatting(unittest.TestCase):
 
 
 class TestURIFormatting(unittest.TestCase):
+    def test_fn(self):
+        self.assertIsNotNone(uri_fmt, "function not found")
+        self.assertTrue(isinstance(uri_fmt, Callable), "function not callable")
+
+    def test_all(self):
+        uri = "<https://example.org/%5Bsquare-brackets%5D>"
+        fmt = uri_fmt("https://example.org/[square-brackets]")
+        self.assertEqual(fmt, uri)
+
+
+class TestURITemplateExpansion(unittest.TestCase):
     def test_fn(self):
         self.assertIsNotNone(uritexpand_fmt, "function not found")
         self.assertTrue(
