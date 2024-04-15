@@ -157,6 +157,9 @@ def xsd_format(content, type_name: str, quote: str = "'"):
         # assuming string content for further quoting rules
         type_name = "xsd:string"
 
+    if not type_name.startswith("xsd:"):
+        type_name = "xsd:" + type_name
+
     type_format_fn = XSD_FMT_TYPE_FN.get(type_name, None)
     assert type_format_fn is not None, (
         "type_name '%s' not supported." % type_name
