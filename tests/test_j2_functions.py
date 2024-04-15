@@ -137,8 +137,8 @@ class TestXSDFormatting(unittest.TestCase):
 
     def test_uri_cleaning(self):
         type_name = "xsd:anyURI"
-        val = "https://example.org/for[testing]"
-        clean_val = "https://example.org/for%5Btesting%5D"
+        val = "https://example.org/for/[testing]"
+        clean_val = "https://example.org/for/%5Btesting%5D"
         fmt = "'" + clean_val + "'^^" + type_name
         self.assertEqual(
             xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
@@ -185,7 +185,7 @@ class TestURIFormatting(unittest.TestCase):
         self.assertIsNotNone(uri_fmt, "function not found")
         self.assertTrue(isinstance(uri_fmt, Callable), "function not callable")
 
-    def test_all(self):
+    def test_nobase(self):
         uri = "<https://example.org/%5Bsquare-brackets%5D>"
         fmt = uri_fmt("https://example.org/[square-brackets]")
         self.assertEqual(fmt, uri)

@@ -165,12 +165,9 @@ def xsd_format(content, type_name: str, quote: str = "'"):
     return type_format_fn(content, quote, suffix)
 
 
-def uri_format(uri: str, relative_to: str = ""):
+def uri_format(uri: str):
     uri = clean_uri(uri)
-    base = clean_uri(relative_to)
-    lenbase = len(base)
-    rel = uri[lenbase:] if uri.startswith(base) else uri
-    return f"<{rel}>"
+    return f"<{uri}>"
 
 
 def uritexpand(template: str, context):
