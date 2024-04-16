@@ -8,6 +8,7 @@ uritexpand_fmt = Functions.all()["uritexpand"]
 regexreplace_fmt = Functions.all()["regexreplace"]
 map_build_fmt = Functions.all()["map"]
 xsd_fmt = Filters.all()["xsd"]
+uri_fmt = Filters.all()["uri"]
 
 
 class TestXSDFormatting(unittest.TestCase):
@@ -16,161 +17,202 @@ class TestXSDFormatting(unittest.TestCase):
         self.assertTrue(isinstance(xsd_fmt, Callable), "function not callable")
 
     def test_bool(self):
-        type_name = "xsd:boolean"
-        self.assertEqual(
-            xsd_fmt(True, type_name),
-            "'true'^^xsd:boolean",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt("anything", type_name, '"'),
-            '"true"^^xsd:boolean',
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(False, type_name, '"'),
-            '"false"^^xsd:boolean',
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(0, type_name),
-            "'false'^^xsd:boolean",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(None, type_name),
-            "'false'^^xsd:boolean",
-            "bad %s format" % type_name,
-        )
+        short_name = "boolean"
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            self.assertEqual(
+                xsd_fmt(True, type_name),
+                "'true'^^xsd:boolean",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt("anything", type_name, '"'),
+                '"true"^^xsd:boolean',
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(False, type_name, '"'),
+                '"false"^^xsd:boolean',
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(0, type_name),
+                "'false'^^xsd:boolean",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(None, type_name),
+                "'false'^^xsd:boolean",
+                "bad %s format" % type_name,
+            )
 
     def test_int(self):
-        type_name = "xsd:integer"
-        self.assertEqual(
-            xsd_fmt(1, type_name),
-            "'1'^^xsd:integer",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(-10, type_name, '"'),
-            '"-10"^^xsd:integer',
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(0, type_name, '"'),
-            '"0"^^xsd:integer',
-            "bad %s format" % type_name,
-        )
+        short_name = "integer"
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            self.assertEqual(
+                xsd_fmt(1, type_name),
+                "'1'^^xsd:integer",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(-10, type_name, '"'),
+                '"-10"^^xsd:integer',
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(0, type_name, '"'),
+                '"0"^^xsd:integer',
+                "bad %s format" % type_name,
+            )
 
-        with self.assertRaises(
-            AssertionError,
-            msg="leading zero's should be dealth with before formatting",
-        ):
-            xsd_fmt(
-                "001", type_name
-            )  # you should not simply assume this to become 1
-        # in stead -- force int casting:
-        self.assertEqual(
-            xsd_fmt(int("001"), type_name),
-            "'1'^^xsd:integer",
-            "bad %s format" % type_name,
-        )
+            with self.assertRaises(
+                AssertionError,
+                msg="leading zero's should be dealth with before formatting",
+            ):
+                xsd_fmt(
+                    "001", type_name
+                )  # you should not simply assume this to become 1
+            # in stead -- force int casting:
+            self.assertEqual(
+                xsd_fmt(int("001"), type_name),
+                "'1'^^xsd:integer",
+                "bad %s format" % type_name,
+            )
 
     def test_double(self):
-        type_name = "xsd:double"
-        self.assertEqual(
-            xsd_fmt(1.0, type_name),
-            "'1.0'^^xsd:double",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt("1", type_name),
-            "'1.0'^^xsd:double",
-            "bad %s format" % type_name,
-        )  # automatic to float
-        self.assertEqual(
-            xsd_fmt(1, type_name),
-            "'1.0'^^xsd:double",
-            "bad %s format" % type_name,
-        )  # automatic to float
-        self.assertEqual(
-            xsd_fmt(1.00, type_name),
-            "'1.0'^^xsd:double",
-            "bad %s format" % type_name,
-        )  # reformatting sideeffect
-        # so actual forced float casting is not needed any more (but works)
-        self.assertEqual(
-            xsd_fmt(float(1), type_name),
-            "'1.0'^^xsd:double",
-            "bad %s format" % type_name,
-        )
+        short_name = "double"
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            self.assertEqual(
+                xsd_fmt(1.0, type_name),
+                "'1.0'^^xsd:double",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt("1", type_name),
+                "'1.0'^^xsd:double",
+                "bad %s format" % type_name,
+            )  # automatic to float
+            self.assertEqual(
+                xsd_fmt(1, type_name),
+                "'1.0'^^xsd:double",
+                "bad %s format" % type_name,
+            )  # automatic to float
+            self.assertEqual(
+                xsd_fmt(1.00, type_name),
+                "'1.0'^^xsd:double",
+                "bad %s format" % type_name,
+            )  # reformatting sideeffect
+            # so actual forced float casting is not needed any more (but works)
+            self.assertEqual(
+                xsd_fmt(float(1), type_name),
+                "'1.0'^^xsd:double",
+                "bad %s format" % type_name,
+            )
 
     def test_date(self):
-        type_name = "xsd:date"
-        val = "1970-05-06"
-        values = [val, date.fromisoformat(val)]
-        for v in values:
-            fmt = "'" + str(v) + "'^^" + type_name
+        long_name = "xsd:date"
+        short_name = long_name[4:]
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            val = "1970-05-06"
+            values = [val, date.fromisoformat(val)]
+            for v in values:
+                fmt = "'" + str(v) + "'^^" + long_name
 
-            self.assertEqual(
-                xsd_fmt(v, type_name), fmt, "bad %s format" % type_name
-            )
+                self.assertEqual(
+                    xsd_fmt(v, type_name), fmt, "bad %s format" % type_name
+                )
 
     def test_datetime(self):
-        type_name = "xsd:datetime"
-        val = "2021-09-30T16:25:50+02:00"
-        values = [val, datetime.fromisoformat(val)]
+        long_name = "xsd:datetime"
+        short_name = long_name[4:]
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            val = "2021-09-30T16:25:50+02:00"
+            values = [val, datetime.fromisoformat(val)]
 
-        for v in values:
-            fmt = "'" + val + "'^^" + type_name
-            self.assertEqual(
-                xsd_fmt(v, type_name), fmt, "bad %s format" % type_name
-            )
+            for v in values:
+                fmt = "'" + val + "'^^" + long_name
+                self.assertEqual(
+                    xsd_fmt(v, type_name), fmt, "bad %s format" % type_name
+                )
 
     def test_uri(self):
-        type_name = "xsd:anyURI"
-        val = "https://example.org/for/testing"
-        fmt = "'" + val + "'^^" + type_name
-        self.assertEqual(
-            xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
-        )
+        long_name = "xsd:anyURI"
+        short_name = long_name[4:]
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            val = "https://example.org/for/testing"
+            fmt = "'" + val + "'^^" + long_name
+            self.assertEqual(
+                xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
+            )
+
+    def test_uri_cleaning(self):
+        long_name = "xsd:anyURI"
+        short_name = long_name[4:]
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            val = "https://example.org/for/[testing]"
+            clean_val = "https://example.org/for/%5Btesting%5D"
+            fmt = "'" + clean_val + "'^^" + long_name
+            self.assertEqual(
+                xsd_fmt(val, type_name), fmt, "bad %s format" % type_name
+            )
 
     def test_string(self):
-        type_name = "xsd:string"
-        self.assertEqual(
-            xsd_fmt("Hello!", type_name),
-            "'Hello!'^^xsd:string",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt("'", type_name, quote='"'),
-            '"\'"^^xsd:string',
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt('"', type_name, quote="'"),
-            "'\"'^^xsd:string",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(">'<", type_name, quote="'"),
-            "'''>'<'''^^xsd:string",
-            "bad %s format" % type_name,
-        )
-        self.assertEqual(
-            xsd_fmt(">\n<", type_name, quote="'"),
-            "'''>\n<'''^^xsd:string",
-            "bad %s format" % type_name,
-        )
+        long_name = "xsd:string"
+        short_name = long_name[4:]
+        for pfx in ("", "xsd:"):
+            type_name = pfx + short_name
+            self.assertEqual(
+                xsd_fmt("Hello!", type_name),
+                "'Hello!'^^xsd:string",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt("'", type_name, quote='"'),
+                '"\'"^^xsd:string',
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt('"', type_name, quote="'"),
+                "'\"'^^xsd:string",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(">'<", type_name, quote="'"),
+                "'''>'<'''^^xsd:string",
+                "bad %s format" % type_name,
+            )
+            self.assertEqual(
+                xsd_fmt(">\n<", type_name, quote="'"),
+                "'''>\n<'''^^xsd:string",
+                "bad %s format" % type_name,
+            )
 
-    def test_lang_string(self):
-        self.assertEqual(
-            xsd_fmt("Hello!", "@en"),
-            "'Hello!'@en",
-            "bad language-string format",
-        )
+        def test_lang_string(self):
+            self.assertEqual(
+                xsd_fmt("Hello!", "@en"),
+                "'Hello!'@en",
+                "bad language-string format",
+            )
 
 
 class TestURIFormatting(unittest.TestCase):
+    def test_fn(self):
+        self.assertIsNotNone(uri_fmt, "function not found")
+        self.assertTrue(isinstance(uri_fmt, Callable), "function not callable")
+
+    def test_nobase(self):
+        uri = "<https://example.org/%5Bsquare-brackets%5D>"
+        fmt = uri_fmt("https://example.org/[square-brackets]")
+        self.assertEqual(fmt, uri)
+
+
+class TestURITemplateExpansion(unittest.TestCase):
     def test_fn(self):
         self.assertIsNotNone(uritexpand_fmt, "function not found")
         self.assertTrue(

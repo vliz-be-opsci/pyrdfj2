@@ -1,7 +1,9 @@
 import re
 from collections.abc import Iterable
 from datetime import date, datetime
+from urllib.parse import quote
 
+import validators
 from dateutil import parser
 from uritemplate import URITemplate
 
@@ -25,7 +27,26 @@ class Filters:
     def all():
         return {
             "xsd": xsd_format,
+            "uri": uri_format,
         }
+
+
+def is_valid_uri(uri: str) -> bool:
+    """Checks if the uri is valid (does not contain chars it should not)
+    :param uri: the uri to check
+    :type uri: str
+    :return: True of uri is ok, else False"""
+    if uri.startswith("urn:"):
+        uri = "http://make.safe/" + uri
+    return bool(validators.url(uri))
+
+
+def clean_uri(uri: str) -> str:
+    """Escapes unacceptable chars in a URI."""
+    if is_valid_uri(uri):
+        return uri
+    # else
+    return quote(uri, safe="~@#$&()*!+=:;,?/'")
 
 
 def xsd_value(content, quote, type_name, suffix=None):
@@ -90,7 +111,7 @@ def xsd_format_datetime(content, quote, suffix):
 
 def xsd_format_uri(content, quote, suffix):
     # assume content is valid uri for now
-    uri = content
+    uri = clean_uri(content)
     return xsd_value(uri, quote, "xsd:anyURI")
 
 
@@ -136,12 +157,20 @@ def xsd_format(content, type_name: str, quote: str = "'"):
         # assuming string content for further quoting rules
         type_name = "xsd:string"
 
+    if not type_name.startswith("xsd:"):
+        type_name = "xsd:" + type_name
+
     type_format_fn = XSD_FMT_TYPE_FN.get(type_name, None)
     assert type_format_fn is not None, (
         "type_name '%s' not supported." % type_name
     )
 
     return type_format_fn(content, quote, suffix)
+
+
+def uri_format(uri: str):
+    uri = clean_uri(uri)
+    return f"<{uri}>"
 
 
 def uritexpand(template: str, context):

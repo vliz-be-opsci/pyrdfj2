@@ -25,6 +25,7 @@ python = ">=3.8.1,<4.0"
 jinja2 = "*"
 uritemplate = "*"
 python-dateutil = "*"
+validators = "^0.28.0"
 
 [tool.poetry.group.docs]
 optional = true
