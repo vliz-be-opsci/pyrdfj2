@@ -106,7 +106,7 @@ def xsd_format_datetime(content, quote, suffix):
         asdtm = parser.isoparse(content)
     else:
         asdtm = content
-    return xsd_value(asdtm.isoformat(), quote, "xsd:datetime")
+    return xsd_value(asdtm.isoformat(), quote, "xsd:dateTime")
 
 
 def xsd_format_uri(content, quote, suffix):
@@ -141,7 +141,7 @@ XSD_FMT_TYPE_FN = {
     "xsd:double": xsd_format_double,
     "xsd:date": xsd_format_date,
     "xsd:datetime": xsd_format_datetime,
-    "xsd:anyURI": xsd_format_uri,
+    "xsd:anyuri": xsd_format_uri,
     "xsd:string": xsd_format_string,
 }
 
@@ -160,7 +160,7 @@ def xsd_format(content, type_name: str, quote: str = "'"):
     if not type_name.startswith("xsd:"):
         type_name = "xsd:" + type_name
 
-    type_format_fn = XSD_FMT_TYPE_FN.get(type_name, None)
+    type_format_fn = XSD_FMT_TYPE_FN.get(type_name.lower(), None)
     assert type_format_fn is not None, (
         "type_name '%s' not supported." % type_name
     )
