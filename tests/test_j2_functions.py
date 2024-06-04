@@ -126,7 +126,7 @@ class TestXSDFormatting(unittest.TestCase):
                 )
 
     def test_datetime(self):
-        long_name = "xsd:datetime"
+        long_name = "xsd:dateTime"
         short_name = long_name[4:]
         for pfx in ("", "xsd:"):
             type_name = pfx + short_name
