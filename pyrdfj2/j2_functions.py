@@ -108,6 +108,21 @@ def xsd_format_datetime(content, quote, suffix):
         asdtm = content
     return xsd_value(asdtm.isoformat(), quote, "xsd:dateTime")
 
+def xsd_format_gYear(content, quote, suffix):
+    # make rigid datetime
+    if not isinstance(content, datetime):
+        asdtm = parser.isoparse(content)
+    else:
+        asdtm = content
+    return xsd_value(asdtm.isoformat(), quote, "xsd:gYear")
+
+def xsd_format_gYearMonth(content, quote, suffix):
+    # make rigid datetime
+    if not isinstance(content, datetime):
+        asdtm = parser.isoparse(content)
+    else:
+        asdtm = content
+    return xsd_value(asdtm.isoformat(), quote, "xsd:gYearMonth")
 
 def xsd_format_uri(content, quote, suffix):
     # assume content is valid uri for now
@@ -141,8 +156,11 @@ XSD_FMT_TYPE_FN = {
     "xsd:double": xsd_format_double,
     "xsd:date": xsd_format_date,
     "xsd:datetime": xsd_format_datetime,
+    "xsd:dateTime": xsd_format_datetime,
     "xsd:anyuri": xsd_format_uri,
     "xsd:string": xsd_format_string,
+    "xsd:gYear": xsd_format_gYear,
+    "xsd:gYearMonth": xsd_format_gYearMonth
 }
 
 
